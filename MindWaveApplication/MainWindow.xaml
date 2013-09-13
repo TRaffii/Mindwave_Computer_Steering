@@ -1,0 +1,15 @@
+﻿<Window x:Class="MindWaveApplication.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="444.2" Width="534">
+    <Grid>
+        <TextBox x:Name="text" HorizontalAlignment="Left" Height="157" Margin="45,73,0,0" TextWrapping="Wrap" Text="test 1" VerticalAlignment="Top" Width="201" SpellCheck.IsEnabled="True"/>
+        <Label x:Name="hj" Content="com 23" HorizontalAlignment="Left" Margin="45,47,0,0" VerticalAlignment="Top" Width="201"/>
+        <Label x:Name="hj_Copy" Content="com 30" HorizontalAlignment="Left" Margin="246,47,0,0" VerticalAlignment="Top" Width="201"/>
+        <TextBox x:Name="Box2" HorizontalAlignment="Left" Height="152" Margin="260,73,0,0" TextWrapping="Wrap" Text="Test 2" VerticalAlignment="Top" Width="201"/>
+        <Rectangle x:Name="square" Fill="Blue" HorizontalAlignment="Left" Height="97" Margin="181,260,0,0" Stroke="Black" VerticalAlignment="Top" Width="148"/>
+        <ProgressBar x:Name="progres1" HorizontalAlignment="Left" Height="22" Margin="45,20,0,0" VerticalAlignment="Top" Width="201"/>
+        <ProgressBar x:Name="progres2" HorizontalAlignment="Left" Height="22" Margin="260,20,0,0" VerticalAlignment="Top" Width="201"/>
+
+    </Grid>
+</Window>
