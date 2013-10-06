@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using NeuroSky.ThinkGear;
-using NeuroSky.ThinkGear.Algorithms;
 using System.Diagnostics;
 using System.Threading;
 namespace MindWaveApplication
@@ -24,22 +23,23 @@ namespace MindWaveApplication
     public partial class MainWindow : Window
     {
         List<Connector> connectors;
-
+        private  Connector test;
         public MainWindow()
         {
             InitializeComponent();
             connectors = new List<Connector>();
+            test = new Connector();
             //Thread thread1 = new Thread(() => PrepareHeadset(new Connector(), "COM32", text, progres1));
             //thread1.Start();
-            Thread thread2 = new Thread(() => PrepareHeadset(new Connector(), "COM23", Box2, progres2));
+            Thread thread2 = new Thread(() => PrepareHeadset("COM32", Box2, progres2));
             
             thread2.Start();
 
         }
-        void PrepareHeadset(Connector v_connector, string v_port, TextBox v_text, ProgressBar v_progress)
+        void PrepareHeadset(string v_port, TextBox v_text, ProgressBar v_progress)
         {
-            v_connector = new Connector();
-            v_connector.blinkDetectionEnabled = true;
+            Connector v_connector = new Connector();
+            v_connector.setBlinkDetectionEnabled(true);
             v_connector.DeviceConnected += delegate(object sender2, EventArgs e2)
             {
                 OnDeviceConnected(sender2, e2, v_text, v_progress);
@@ -65,8 +65,7 @@ namespace MindWaveApplication
         //}
         void OnDeviceConnected(object sender, EventArgs e, TextBox text, ProgressBar v_progress)
         {
-            Connector test = (Connector)sender;
-            test.blinkDetectionEnabled = true;
+            Connector test = (Connector)sender;    
             Connector.DeviceEventArgs deviceEventArgs = (Connector.DeviceEventArgs)e;
             Debug.WriteLine("New Headset Created." + deviceEventArgs.Device.PortName);
 
@@ -101,13 +100,27 @@ namespace MindWaveApplication
             
                     //Console.WriteLine("Raw Value:" + tgParser.ParsedData[i]["Raw"]);
                 }
-                
+
                 if (tgParser.ParsedData[i].ContainsKey("BlinkStrength"))
                 {
-                    this.Dispatcher.Invoke((Action)(() =>
+                    if (tgParser.ParsedData[i]["BlinkStrength"] > 50)
                     {
-                        //v_progress.Value = 100 - (Double)(tgParser.ParsedData[i]["PoorSignal"]);
-                    }));
+                        this.Dispatcher.Invoke((Action)(() =>
+                        {
+                            SolidColorBrush mySolidColorBrush = new SolidColorBrush();
+                            Console.WriteLine(square.Fill.ToString());
+                            if (square.Fill.ToString() == "#642048FF")
+                            {
+                                mySolidColorBrush.Color = Color.FromArgb(100, 201, 10, 10);
+                            }
+                            else
+                            {
+                                mySolidColorBrush.Color = Color.FromArgb(100, 32, 72, 255);
+                            }
+                            square.Fill = mySolidColorBrush;
+                            //v_progress.Value = 100 - (Double)(tgParser.ParsedData[i]["PoorSignal"]);
+                        }));
+                    }
                     Console.WriteLine("Blink:" + tgParser.ParsedData[i]["BlinkStrength"]);
                 }
                 if (tgParser.ParsedData[i].ContainsKey("PoorSignal"))
